@@ -1,17 +1,17 @@
 package beans.managers;
 
 import beans.User;
-import java.util.Optional;
 
-public class UserManager extends Manager {
+public class UserManager extends Manager<User> {
 
 	public User getByEmail(String email) {
 		return (User) em().createQuery("SELECT user FROM User user WHERE user.email = " + email)
 				.getSingleResult();
 	}
-	
-    public Optional<User> get(int id) {
-        return Optional.ofNullable(em().find(User.class, id));
+	    
+    public boolean validate(String email, String password) {
+        return em().createQuery("SELECT user FROM User user WHERE user.email = '" + email + "' AND user.password = " + password)
+                .getResultList().size() == 1;
     }
 	
 }
