@@ -21,7 +21,7 @@ public class Demo extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-//hello there
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
