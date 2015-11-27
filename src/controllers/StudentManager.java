@@ -26,7 +26,7 @@ public class StudentManager extends HttpServlet {
 	
 	private void bindPaths() {
 		mapping = new Bindabble();
-		mapping.bind("/get", "studentCourses.jsp", (req, res) -> StudentController.getCourses(req));
+		mapping.bind("/get", "studentcourses.jsp", (req, res) -> StudentController.getCourses(req));
 	}
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {        
