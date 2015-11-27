@@ -1,11 +1,7 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +14,7 @@ public class StudentManager extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	private Map<String, RequestHandler> pageMapping;
+	private Bindabble mapping;
 			
 	private ServletConfig config;
 	
@@ -29,14 +25,14 @@ public class StudentManager extends HttpServlet {
 	}
 	
 	private void bindPaths() {
-		pageMapping = new HashMap<String, RequestHandler>();
-		pageMapping.put("/get", (req, res) -> StudentController.getCourses(req));
+		mapping = new Bindabble();
+		mapping.bind("/get", "studentCourses.jsp", (req, res) -> StudentController.getCourses(req));
 	}
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {        
-		RequestHandler handler = pageMapping.get(request.getServletPath());
-		request.setAttribute("in", handler.handle(request, response));
-		config.getServletContext().getRequestDispatcher("").forward(request, response);
+		Action action = mapping.get(request.getServletPath());
+		request.setAttribute("in", action.handler.handle(request, response));
+		config.getServletContext().getRequestDispatcher(action.view).forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
