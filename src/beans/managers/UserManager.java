@@ -6,9 +6,9 @@ import beans.User;
 
 public class UserManager {
 		
-	public static User getByEmail(String email) {
-		return (User) DataSource.em().createQuery("SELECT user FROM User user WHERE user.email = " + email)
-				.getSingleResult();
+	public static Optional<User> getByEmail(String email) {
+		return Optional.ofNullable((User) DataSource.em().createQuery("SELECT user FROM User user WHERE user.email = " + email)
+				.getSingleResult());
 	}
 	    
     public static boolean validate(String email, String password) {

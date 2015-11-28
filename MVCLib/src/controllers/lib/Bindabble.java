@@ -1,4 +1,4 @@
-package controllers;
+package controllers.lib;
 
 import java.util.HashMap;
 
@@ -9,5 +9,5 @@ public class Bindabble extends HashMap<String, Action>{
 	public void bind(String path, String view, RequestHandler handler) {
 		super.put(path, new Action(view, handler));
 	}
-	
+		
 }

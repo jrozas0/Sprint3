@@ -1,4 +1,4 @@
-package controllers;
+package http;
 
 import java.io.IOException;
 
@@ -9,12 +9,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/student/*")
-public class StudentManager extends HttpServlet {       	
+import controllers.StudentController;
+import controllers.lib.Action;
+import controllers.lib.Bindabble;
+
+@WebServlet("/*")
+public class MainEndpoint extends HttpServlet {       	
 
 	private static final long serialVersionUID = 1L;
 
-	private Bindabble mapping;
+	private Bindabble mappings;
 			
 	private ServletConfig config;
 	
@@ -25,18 +29,16 @@ public class StudentManager extends HttpServlet {
 	}
 	
 	private void bindPaths() {
-		mapping = new Bindabble();
-		mapping.bind("/get", "studentcourses.jsp", (req, res) -> StudentController.getCourses(req));
+		mappings = new Bindabble();
+		mappings.bind("/get", "studentcourses.jsp", (req, res) -> StudentController.getCourses(req));
 	}
-    
+	    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {        
-		Action action = mapping.get(request.getServletPath());
-		request.setAttribute("in", action.handler.handle(request, response));
-		config.getServletContext().getRequestDispatcher(action.view).forward(request, response);
+		Action.Handle(mappings, config, request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		Action.Handle(mappings, config, request, response);
 	}
 	
 }
