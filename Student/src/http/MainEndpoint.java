@@ -30,7 +30,7 @@ public class MainEndpoint extends HttpServlet {
 	
 	private void bindPaths() {
 		mappings = new Bindabble();
-		mappings.bind("/get", "studentcourses.jsp", (req, res) -> StudentController.getCourses(req));
+		mappings.bind("/get", "courses.jsp", (req, res) -> StudentController.getCourses(req));
 	}
 	    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {        

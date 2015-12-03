@@ -19,4 +19,13 @@ public class StudentController {
 		return user.getCourses();
 	}
 		
+	public static Student findStudent(HttpServletRequest request) throws MVCException {
+		Integer id = Integer.parseInt(request.getParameter("id"));
+		if (id == null) throw new BadRequest();
+		User user = UserManager.get(id).get();
+		return user;
+	}
+	
+	
+	
 }
