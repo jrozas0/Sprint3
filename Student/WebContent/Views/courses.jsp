@@ -1,14 +1,13 @@
 <%@ page import="java.util.Optional" %>
-<%@ page import="java.util.function.Predicate" %>
 <%@ page import="beans.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <jsp:include page="assets.jsp"></jsp:include>
+  <jsp:include page="plain/assets.jsp"></jsp:include>
   <title></title>
 </head>
 <body>
-<jsp:include page="nav.jsp"></jsp:include>
+<jsp:include page="plain/nav.jsp"></jsp:include>
 
 
 
@@ -60,9 +59,9 @@
         <div class="col-md-6">
             <h2>Courses by category</h2>
             <ul class="">
-            	<%
-                	out.print("<a href=\"/courses?category=" + cat1.getId() + "\"><h3>" + cat1.getName() + "</h3></a>");
-            	%>
+                <% for(Category cat1 : Category.getAllCategories()) {
+                    out.print("<a href=\"/courses?category=" + cat1.getId() + "\"><h3>" + cat1.getName() + "</h3></a>");
+                } %>
             </ul>
         </div>
 

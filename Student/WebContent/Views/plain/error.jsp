@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="lib.controllers.ex.Error" %>
 <html>
 <head>
   <jsp:include page="assets.jsp"></jsp:include>
@@ -8,7 +9,8 @@
 <jsp:include page="nav.jsp"></jsp:include>
 
 <%//set HTTP status code to not found
-  response.setStatus(500);
+  Error error = (Error) request.getAttribute("in");
+  response.setStatus(error.getCode());
 %>
 
 <div class="container">
@@ -16,16 +18,9 @@
     <div class="col-md-12 text-center">
       <h1 class="h1color">
         <b>
-          500! Internal Server Error
+          <%=error.getCode()%>! <%=error.getMessage()%>
         </b>
       </h1>
-      <p class="text-inverse">
-        <%
-          if (request.getAttribute("error") != null) {
-            out.print(request.getAttribute("error"));
-          }
-        %>
-      </p>
     </div>
   </div>
 </div>

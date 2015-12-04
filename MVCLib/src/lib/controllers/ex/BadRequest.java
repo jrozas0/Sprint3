@@ -1,4 +1,4 @@
-package controllers.lib.ex;
+package lib.controllers.ex;
 
 public class BadRequest extends MVCException {
 

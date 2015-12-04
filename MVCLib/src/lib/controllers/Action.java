@@ -1,4 +1,4 @@
-package controllers.lib;
+package lib.controllers;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controllers.lib.ex.MVCException;
+import lib.controllers.ex.MVCException;
 
 public class Action {
 
@@ -25,9 +25,9 @@ public class Action {
 		config.getServletContext().getRequestDispatcher(action.view).forward(request, response);
 	}
 	
-	private static void sendError(controllers.lib.ex.Error error, ServletConfig config, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private static void sendError(lib.controllers.ex.Error error, ServletConfig config, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("in", error);
-		config.getServletContext().getRequestDispatcher("basic/error.jsp").forward(request, response);
+		config.getServletContext().getRequestDispatcher("plain/error.jsp").forward(request, response);
 	}
 	
 	public static void Handle(Bindabble mappings, ServletConfig config, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

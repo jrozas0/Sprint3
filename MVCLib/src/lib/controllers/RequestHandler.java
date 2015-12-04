@@ -1,9 +1,9 @@
-package controllers.lib;
+package lib.controllers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controllers.lib.ex.MVCException;
+import lib.controllers.ex.MVCException;
 
 @FunctionalInterface
 public interface RequestHandler {

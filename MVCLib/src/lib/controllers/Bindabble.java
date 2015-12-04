@@ -1,4 +1,4 @@
-package controllers.lib;
+package lib.controllers;
 
 import java.util.HashMap;
 

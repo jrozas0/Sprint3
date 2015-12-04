@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lib.controllers.Action;
+import lib.controllers.Bindabble;
 import controllers.StudentController;
-import controllers.lib.Action;
-import controllers.lib.Bindabble;
 
 @WebServlet("/*")
 public class MainEndpoint extends HttpServlet {       	

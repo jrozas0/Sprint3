@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import controllers.lib.ex.BadRequest;
-import controllers.lib.ex.MVCException;
+import lib.controllers.ex.BadRequest;
+import lib.controllers.ex.MVCException;
 import beans.Course;
 import beans.User;
 import beans.managers.UserManager;
