@@ -94,6 +94,10 @@ public class Course implements Serializable {
 	public byte getDenied() {
 		return this.denied;
 	}
+	
+	public boolean isDenied() {
+		return getDenied() == 0;
+	}
 
 	public void setDenied(byte denied) {
 		this.denied = denied;
@@ -173,6 +177,10 @@ public class Course implements Serializable {
 
 	public byte getValid() {
 		return this.valid;
+	}
+	
+	public boolean isValid() {
+		return getValid() == 0;
 	}
 
 	public void setValid(byte valid) {

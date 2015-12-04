@@ -1,8 +1,14 @@
 package beans;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+import javax.servlet.http.HttpServletRequest;
+
+import beans.managers.UserManager;
+
 import java.util.List;
+import java.util.stream.Stream;
 
 
 /**
@@ -279,7 +285,7 @@ public class User implements Serializable {
 	public List<Userteaching> getUserteachings() {
 		return this.userteachings;
 	}
-
+	
 	public void setUserteachings(List<Userteaching> userteachings) {
 		this.userteachings = userteachings;
 	}
@@ -319,5 +325,26 @@ public class User implements Serializable {
 
 		return userwishing;
 	}
+	
+	public boolean isTeacher() {
+			
+			if (this.getType().compareTo("teacher") == 0){
+				return true;
+			
+			} else {
+				return false;
+			}
+	}
+	
+	public boolean isStudent() {
+		
+		if (this.getType().compareTo("student") == 0){
+			return true;
+		
+		} else {
+			return false;
+		}
+}
+
 
 }
