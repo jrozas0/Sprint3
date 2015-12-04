@@ -42,7 +42,7 @@
                       <label class="control-label">Nickname</label>
                   </div>
                   <div class="col-sm-10">
-                      <input name="nickname" class="form-control"  placeholder="Nickname" value="<% if (edit) out.print(user.getNickname());%>">
+                      <input name="nickname" class="form-control"  placeholder="Nickname" value="<% if (edit) out.print(user.getNick());%>">
                   </div>
               </div>
               <div class="form-group">

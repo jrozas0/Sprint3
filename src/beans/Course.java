@@ -1,7 +1,11 @@
 package beans;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import beans.managers.CourseManager;
+
 import java.math.BigInteger;
 import java.util.List;
 
@@ -131,6 +135,10 @@ public class Course implements Serializable {
 		return this.highlighted;
 	}
 
+	public boolean isHighlited(){
+		return getHighlighted() == 0;
+	}
+	
 	public void setHighlighted(byte highlighted) {
 		this.highlighted = highlighted;
 	}
@@ -289,6 +297,10 @@ public class Course implements Serializable {
 		userwishing.setCourse(null);
 
 		return userwishing;
+	}
+	
+	public static List<Course> getAllCourses(){
+		return CourseManager.getCourses();
 	}
 
 }

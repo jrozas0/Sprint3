@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import beans.Course;
 import beans.User;
 
 public class UserManager {
@@ -27,5 +28,10 @@ public class UserManager {
 				.getSingleResult());
 	}	
 	
+	public static boolean userIsAttending(User user, Course course){
+		return DataSource.em().createQuery("SELECT course FROM Userattending user WHERE user.id = '" + user.getId() + "' AND course.id = " + course.getId())
+		.getResultList().size() == 1;
+		
+	}
     
 }

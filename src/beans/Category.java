@@ -1,7 +1,11 @@
 package beans;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import beans.managers.CategoryManager;
+
 import java.util.List;
 
 
@@ -66,6 +70,10 @@ public class Category implements Serializable {
 		cours.setCategory(null);
 
 		return cours;
+	}
+	
+	public static List<Category> getAllCategories(){
+		return CategoryManager.getCategories();
 	}
 
 }

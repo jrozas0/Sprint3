@@ -73,22 +73,24 @@
                             <% } if(user.isStudent()) { %>
                                     <h2>Attending</h2>
                                     <ul class="list-group">
-                                        <% for(Course course : ((Student) user).getAttending()) {
+                                        <% for(Userattending student : user.getUserattendings()) {
+                                        	Course course = student.getCourse();
                                             out.print("<a href=\"/restricted/course?id=" + course.getId() + "\"><li class=\"h4 list-group-item list-group-item-success\">" + course.getTitle() + "</li></a>");
                                         } %>
                                     </ul>
 
                                     <h2>Achievements</h2>
                                     <ul class="list-group">
-                                        <% for(Certificate certificate : ((Student) user).getCertificates()) {
-                                            out.print("<li class=\"h4 list-group-item list-group-item-success\">" + certificate.getCourseName() + "</li>");
+                                        <% for(Certificate certificate : user.getCertificates()) {
+                                            out.print("<li class=\"h4 list-group-item list-group-item-success\">" + certificate.getCourseSeed() + "</li>");
                                         } %>
                                     </ul>
 
                                     <h2>Wishlist</h2>
                                     <ul class="list-group">
-                                        <% for(Course course : ((Student) user).getWishlist()) {
-                                            if (!((Student) user).isAttending(course) && course.exists()) {
+                                        <% for(Userwishing wish : user.getUserwishings()) {
+                                        	Course course = wish.getCourse();
+                                            if (!user.isAttending(course)) {
                                                 out.print("<a href=\"/restricted/course?id=" + course.getId() + "\"><li class=\"h4 list-group-item list-group-item-success\">" + course.getTitle() + "</li></a>");
                                             }
                                         } %>
