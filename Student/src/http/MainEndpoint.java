@@ -9,11 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controllers.StudentController;
 import lib.controllers.Action;
 import lib.controllers.Bindabble;
-import controllers.StudentController;
+import lib.controllers.RequestHandler;
+import lib.controllers.ex.MVCException;
 
-@WebServlet("/*")
+@WebServlet("/Main/*")
 public class MainEndpoint extends HttpServlet {       	
 
 	private static final long serialVersionUID = 1L;
@@ -30,7 +32,12 @@ public class MainEndpoint extends HttpServlet {
 	
 	private void bindPaths() {
 		mappings = new Bindabble();
-		mappings.bind("/get", "courses.jsp", (req, res) -> StudentController.getCourses(req));
+		mappings.bind("/get", "/views/courses.jsp", new RequestHandler() {
+			@Override
+			public Object handle(HttpServletRequest request, HttpServletResponse response) throws MVCException {
+				return StudentController.getCourses(request);
+			}
+		});
 	}
 	    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {        
