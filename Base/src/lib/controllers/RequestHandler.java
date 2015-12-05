@@ -9,4 +9,8 @@ public interface RequestHandler {
 	
 	public abstract Object handle(HttpServletRequest request, HttpServletResponse response) throws MVCException;
 		
+	public static RequestHandler PLAIN() {
+		return null;
+	}
+	
 }

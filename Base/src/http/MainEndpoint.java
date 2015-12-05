@@ -32,7 +32,10 @@ public class MainEndpoint extends HttpServlet {
 	
 	private void bindPaths() {
 		mappings = new Bindabble();
-		mappings.bind("/get", "/views/courses.jsp", new RequestHandler() {
+		
+		mappings.bind("/", "/views/plain/home.jsp", RequestHandler.PLAIN());
+		
+		mappings.bind("/courses", "/views/courses.jsp", new RequestHandler() {
 			@Override
 			public Object handle(HttpServletRequest request, HttpServletResponse response) throws MVCException {
 				return StudentController.getCourses(request);

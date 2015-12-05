@@ -18,7 +18,8 @@
     <div class="col-md-12 text-center">
       <h1 class="h1color">
         <b>
-          <%=error.getCode()%>! <%=error.getMessage()%>
+          Error <%=error.getCode()%>! <br>
+          <%=error.getMessage()%>
         </b>
       </h1>
     </div>

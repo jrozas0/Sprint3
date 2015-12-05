@@ -20,10 +20,9 @@ public class Action {
 	}
 	
 	private static void Apply(Bindabble mappings, ServletConfig config, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, MVCException {
-		System.out.println("got hit!");
-		System.out.println(request.getPathInfo());
 		Action action = mappings.get(request.getPathInfo());
-		request.setAttribute("in", action.handler.handle(request, response)); //may throw runtime exception here from the controllers
+		if (action.handler != null)
+			request.setAttribute("in", action.handler.handle(request, response)); //may throw runtime exception here from the controllers
 		config.getServletContext().getRequestDispatcher(action.view).forward(request, response);
 	}
 	
