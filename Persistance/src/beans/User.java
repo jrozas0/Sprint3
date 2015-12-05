@@ -3,7 +3,6 @@ package beans;
 import java.io.Serializable;
 
 import javax.persistence.*;
-import javax.servlet.http.HttpServletRequest;
 
 import beans.managers.UserManager;
 

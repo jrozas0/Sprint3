@@ -3,7 +3,7 @@
 	<name>Base</name>
 	<comment></comment>
 	<projects>
-		<project>MVCLib</project>
+		<project>Persistance</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

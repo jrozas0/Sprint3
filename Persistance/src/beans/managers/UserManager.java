@@ -2,8 +2,6 @@ package beans.managers;
 
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-
 import beans.Course;
 import beans.User;
 
