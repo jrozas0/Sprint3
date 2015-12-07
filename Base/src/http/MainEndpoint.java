@@ -41,6 +41,11 @@ public class MainEndpoint extends HttpServlet {
 				return StudentController.getCourses(request);
 			}
 		});
+		
+		mappings.bind("/login", "/views/login.jsp", RequestHandler.PLAIN());
+		mappings.bind("/register", "/views/register.jsp", RequestHandler.PLAIN());
+
+		
 	}
 	    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {        

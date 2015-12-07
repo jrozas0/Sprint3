@@ -11,6 +11,10 @@ public class UserController {
 	public static boolean isLoggedIn(User user, HttpServletRequest request) {
 		return request.getSession().getAttribute("userId").equals(user.getId());
 	}
+	
+	public static void login(HttpServletRequest request) {
+		
+	}
 
 	
 }
