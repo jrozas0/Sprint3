@@ -21,7 +21,7 @@ public class UserManager {
         return Optional.ofNullable(DataSource.em().find(User.class, id));
     }
 	
-	public static Optional<User> getById(String id) {
+	public static Optional<User> getById(Long id) {
 		return Optional.ofNullable((User) DataSource.em().createQuery("SELECT user FROM User user WHERE user.id = " + id)
 				.getSingleResult());
 	}	

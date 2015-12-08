@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import lib.controllers.ex.MVCException;
+import lib.controllers.ex.NotFound;
 
 public class Action {
 
@@ -21,6 +22,7 @@ public class Action {
 	
 	private static void Apply(Bindabble mappings, ServletConfig config, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, MVCException {
 		Action action = mappings.get(request.getPathInfo());
+		if (action == null) throw new NotFound();
 		Object state = null;
 		if (action.handler != null && !(state instanceof View))
 			state = action.handler.apply(request, response);
