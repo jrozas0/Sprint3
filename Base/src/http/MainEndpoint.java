@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controllers.StudentController;
+import controllers.UserController;
 import lib.controllers.Action;
 import lib.controllers.Bindabble;
 import lib.controllers.RequestHandler;
+import lib.controllers.View;
 import lib.controllers.ex.MVCException;
 
 @WebServlet("/Main/*")
@@ -33,18 +35,24 @@ public class MainEndpoint extends HttpServlet {
 	private void bindPaths() {
 		mappings = new Bindabble();
 		
-		mappings.bind("/", "/views/plain/home.jsp", RequestHandler.PLAIN());
+		//basic navigation with no state
+		mappings.bind("/home", View.Simple("/views/plain/home.jsp"), RequestHandler.PLAIN());
+		mappings.bind("/login", View.Simple("/views/login.jsp"), RequestHandler.PLAIN());
+		mappings.bind("/register", View.Simple("/views/register.jsp"), RequestHandler.PLAIN());
 		
-		mappings.bind("/courses", "/views/courses.jsp", new RequestHandler() {
+		mappings.bind("/login/post", View.Delegator(), new RequestHandler() {
+			@Override
+			public Object handle(HttpServletRequest request, HttpServletResponse response) throws MVCException {
+				return UserController.login(request);
+			}
+		});
+						
+		mappings.bind("/courses", View.Simple("/views/courses.jsp"), new RequestHandler() {
 			@Override
 			public Object handle(HttpServletRequest request, HttpServletResponse response) throws MVCException {
 				return StudentController.getCourses(request);
 			}
 		});
-		
-		mappings.bind("/login", "/views/login.jsp", RequestHandler.PLAIN());
-		mappings.bind("/register", "/views/register.jsp", RequestHandler.PLAIN());
-
 		
 	}
 	    

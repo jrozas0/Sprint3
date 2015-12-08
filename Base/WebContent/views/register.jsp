@@ -1,4 +1,5 @@
 <%@ page import="beans.User" %>
+<%@ page import="lib.controllers.View" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -13,9 +14,9 @@
           boolean edit = false;
           User user = null;
 
-          if(request.getAttribute("registered") != null) { %>
+          if(View.is(request, "ok")) { %>
               <h1>You have been registered!</h1>
-              <h3>You can login <a href="login">here</a></h3>
+              <h3>You can login <a href="/Base/Main/login">here</a></h3>
           <% } else {%>
 
                 <%

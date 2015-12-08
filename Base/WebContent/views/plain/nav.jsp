@@ -9,12 +9,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">DokkuLearning</a>
+      <a class="navbar-brand" href="/Base/Main/home">DokkuLearning</a>
     </div>
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
       <ul class="nav navbar-nav navbar-right">
 
-        <li><a href="/Base/Main/">Home</a></li>
+        <li><a href="/Base/Main/home">Home</a></li>
 
         <li><a href="/Base/Main/courses">Courses</a></li>
 

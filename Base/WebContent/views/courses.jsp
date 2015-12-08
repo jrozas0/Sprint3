@@ -15,7 +15,7 @@
 
     <% 
     Optional<Category> cat = (Optional<Category>)request.getAttribute("in");
-    
+        
     if (cat.isPresent()) { %>
 
         <div class="row">
