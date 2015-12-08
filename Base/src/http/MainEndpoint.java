@@ -13,6 +13,7 @@ import controllers.StudentController;
 import controllers.UserController;
 import lib.controllers.Action;
 import lib.controllers.Bindabble;
+import lib.controllers.RequestDelegator;
 import lib.controllers.RequestHandler;
 import lib.controllers.View;
 import lib.controllers.ex.MVCException;
@@ -40,9 +41,9 @@ public class MainEndpoint extends HttpServlet {
 		mappings.bind("/login", View.Simple("/views/login.jsp"), RequestHandler.PLAIN());
 		mappings.bind("/register", View.Simple("/views/register.jsp"), RequestHandler.PLAIN());
 		
-		mappings.bind("/login/post", View.Delegator(), new RequestHandler() {
+		mappings.bind("/login/post", new RequestDelegator() {
 			@Override
-			public Object handle(HttpServletRequest request, HttpServletResponse response) throws MVCException {
+			public View delegate(HttpServletRequest request, HttpServletResponse response) throws MVCException {
 				return UserController.login(request);
 			}
 		});

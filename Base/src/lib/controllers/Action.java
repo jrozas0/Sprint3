@@ -12,9 +12,9 @@ import lib.controllers.ex.MVCException;
 public class Action {
 
 	public View view;
-	public RequestHandler handler;
+	public Handler handler;
 	
-	public Action(View view, RequestHandler handler) {
+	public Action(View view, Handler handler) {
 		this.view = view;
 		this.handler = handler;
 	}
@@ -23,7 +23,7 @@ public class Action {
 		Action action = mappings.get(request.getPathInfo());
 		Object state = null;
 		if (action.handler != null && !(state instanceof View))
-			state = action.handler.handle(request, response);
+			state = action.handler.apply(request, response);
 			request.setAttribute("in", state); //may throw runtime exception here from the controllers
 		if (state != null && (state instanceof View)) {
 			View view = ((View)state);

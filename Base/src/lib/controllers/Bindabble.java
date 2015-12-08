@@ -9,5 +9,9 @@ public class Bindabble extends HashMap<String, Action>{
 	public void bind(String path, View view, RequestHandler handler) {
 		super.put(path, new Action(view, handler));
 	}
+	
+	public void bind(String path, RequestDelegator handler) {
+		super.put(path, new Action(View.Delegator(), handler));
+	}
 		
 }
