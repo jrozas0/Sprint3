@@ -2,6 +2,7 @@ package controllers;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lib.controllers.Action;
 import lib.controllers.View;
 import lib.controllers.ex.BadRequest;
 import lib.controllers.ex.NotFound;
@@ -21,22 +22,14 @@ public class UserController {
 		
 	//handle register from post
 	public static View register(HttpServletRequest request) {
-		Integer id;
-		try {
-			 id = Integer.parseInt(request.getParameter("id"));
-		} catch(NumberFormatException e) {
-			throw new BadRequest();
-		}
-		if (id == null) throw new BadRequest();
-		User user = UserManager.get(id).get();
+		//TODO
 		return View.FinateState("/views/register.jsp", "ok");
-
 	}
 	
-    private static View login(HttpServletRequest req) {
+    public static View login(HttpServletRequest req) {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        if (validate(req, email, password)) {
+        if (Action.validate(req, email, password)) {
             if (UserManager.validate(email, password)) {
                 User user = UserManager.getByEmail(email).get();
                 req.getSession().setAttribute("user", user);
@@ -58,16 +51,5 @@ public class UserController {
 		if (user == null) throw new NotFound();
 		else return user;
     }
-    
-    //helper for validating inputs
-    public static boolean validate(HttpServletRequest req, Object... input) {
-        for(int i = 0; i < input.length; i++) {
-            if (input[i] == null)  {
-                return false;
-            }
-        }
-        return true;
-    }
-	
-	
+    	
 }

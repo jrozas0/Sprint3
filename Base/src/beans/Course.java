@@ -295,12 +295,7 @@ public class Course implements Serializable {
 	public Userwishing removeUserwishing(Userwishing userwishing) {
 		getUserwishings().remove(userwishing);
 		userwishing.setCourse(null);
-
 		return userwishing;
-	}
-	
-	public static List<Course> getAllCourses(){
-		return CourseManager.getCourses();
 	}
 
 }

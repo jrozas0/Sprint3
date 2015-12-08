@@ -10,7 +10,14 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <form class="form-horizontal" role="form" action="login" method="post">
+            
+            <% if(View.is(request, "ok")) {  %>
+            	
+            		<h1>Welcome again!</h1>
+            	
+            <% } else { %>        	
+      
+            <form class="form-horizontal" role="form" action="/Base/Main/login/post" method="post">
                 <div class="form-group">
                     <div class="col-sm-2">
                         <label for="inputEmail3" class="control-label">Email</label>
@@ -32,17 +39,21 @@
                         <button type="submit" class="btn btn-default btn-lg">Log In</button>
                     </div>
                 </div>
-                    <%
+          	
+	          	<%
                 //handle response from the server, from when the form is submitted
-                if(View.is(request, "notfound")) {
+                if(View.is(request, "notfound"))
                     out.println("<p class=\"col-sm-offset-2\">Not found user with that email/password combination</p>");
-                }
-            %>
+	            %>
         	</form>
+        	
+        	<% } %>
+        	
        	</div>
+       	
         <h3 class="text-center col-md-6">Don't have an account?
             <b>
-                <a class="signUp" href="register">Sign Up!</a>
+                <a class="signUp" href="/Base/Main/register">Sign Up!</a>
             </b>
         </h3>
     </div>

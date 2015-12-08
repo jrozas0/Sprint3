@@ -17,7 +17,7 @@ public class UserManager {
                 .getResultList().size() == 1;
     }
     
-    public static Optional<User> get(int id) {
+    public static Optional<User> getById(int id) {
         return Optional.ofNullable(DataSource.em().find(User.class, id));
     }
 	

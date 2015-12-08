@@ -26,7 +26,7 @@
                         user = (User) request.getSession().getAttribute("user");
                     }
                 %>
-      <form class="form-horizontal" role="form" action="" enctype="multipart/form-data" method="post">
+      <form class="form-horizontal" role="form" action="/Base/Main/register/post" method="post">
 
           <div class="col-md-6">
 

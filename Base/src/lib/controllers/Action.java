@@ -49,5 +49,16 @@ public class Action {
 			Action.sendError(e.getError(), config, request, response);
 		}
 	}
+	
+    //helper for validating inputs
+    public static boolean validate(HttpServletRequest req, Object... input) {
+        for(int i = 0; i < input.length; i++) {
+            if (input[i] == null)  {
+                return false;
+            }
+        }
+        return true;
+    }	
+
 			
 }

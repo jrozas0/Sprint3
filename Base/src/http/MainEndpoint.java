@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controllers.StudentController;
+import controllers.CourseController;
 import controllers.UserController;
 import lib.controllers.Action;
 import lib.controllers.Bindabble;
@@ -61,6 +61,20 @@ public class MainEndpoint extends HttpServlet {
 			@Override
 			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
 				return UserController.register(req);
+			}
+		});
+		
+		mappings.bind("/login/post", new RequestDelegator() {
+			@Override
+			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
+				return UserController.login(req);
+			}
+		});
+		
+		mappings.bind("/courses", View.Simple("/views/courses.jsp"), new RequestHandler() {
+			@Override
+			public Object handle(HttpServletRequest req, HttpServletResponse res) throws MVCException {
+				return CourseController.coursesForCat(req);
 			}
 		});
 								

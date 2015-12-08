@@ -68,12 +68,7 @@ public class Category implements Serializable {
 	public Course removeCours(Course cours) {
 		getCourses().remove(cours);
 		cours.setCategory(null);
-
 		return cours;
 	}
 	
-	public static List<Category> getAllCategories(){
-		return CategoryManager.getCategories();
-	}
-
 }
