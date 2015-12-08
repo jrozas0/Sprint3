@@ -21,15 +21,7 @@ public class StudentController {
 		}
 		User user = UserManager.get(id).get();
 		return user.getCourses();
-	}
-		
-	public static User findStudent(HttpServletRequest request) throws MVCException {
-		Integer id = Integer.parseInt(request.getParameter("id"));
-		if (id == null) throw new BadRequest();
-		User user = UserManager.get(id).get();
-		return user;
-	}
-	
+	}	
 	
 	
 }

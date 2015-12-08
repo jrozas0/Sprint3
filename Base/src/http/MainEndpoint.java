@@ -41,10 +41,10 @@ public class MainEndpoint extends HttpServlet {
 		mappings.bind("/login", View.Simple("/views/login.jsp"), RequestHandler.PLAIN());
 		mappings.bind("/register", View.Simple("/views/register.jsp"), RequestHandler.PLAIN());
 		
-		mappings.bind("/login/post", new RequestDelegator() {
+		mappings.bind("/register/post", new RequestDelegator() {
 			@Override
 			public View delegate(HttpServletRequest request, HttpServletResponse response) throws MVCException {
-				return UserController.login(request);
+				return UserController.register(request);
 			}
 		});
 						

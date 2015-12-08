@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="lib.controllers.View" %>
 <html>
 <head>
     <jsp:include page="plain/assets.jsp"></jsp:include>
@@ -33,12 +34,12 @@
                 </div>
                     <%
                 //handle response from the server, from when the form is submitted
-                if(request.getAttribute("notfound") != null) {
+                if(View.is(request, "notfound")) {
                     out.println("<p class=\"col-sm-offset-2\">Not found user with that email/password combination</p>");
                 }
             %>
-        </div>
-        </form>
+        	</form>
+       	</div>
         <h3 class="text-center col-md-6">Don't have an account?
             <b>
                 <a class="signUp" href="register">Sign Up!</a>
