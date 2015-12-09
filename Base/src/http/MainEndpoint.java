@@ -77,7 +77,7 @@ public class MainEndpoint extends HttpServlet {
 				return CourseController.coursesForCat(req);
 			}
 		});
-								
+										
 	}
 	    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {        

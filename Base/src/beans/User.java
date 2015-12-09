@@ -7,15 +7,14 @@ import javax.persistence.*;
 import beans.managers.UserManager;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 
 /**
  * The persistent class for the USER database table.
  * 
  */
-@Entity
 @Table(name="USER")
+@Entity(name="User")
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -53,7 +52,6 @@ public class User implements Serializable {
 	private int phone;
 
 	@Lob
-	@Column(nullable=false)
 	private byte[] pic;
 
 	@Column(nullable=false, length=45)

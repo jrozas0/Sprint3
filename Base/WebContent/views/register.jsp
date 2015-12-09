@@ -10,7 +10,7 @@
 <jsp:include page="plain/nav.jsp"></jsp:include>
 <div class="container">
   <div class="row">
-          <%  //handle response from the server, from when the form is submitted
+          <%
           boolean edit = false;
           User user = null;
 
@@ -19,13 +19,6 @@
               <h3>You can login <a href="/Base/Main/login">here</a></h3>
           <% } else {%>
 
-                <%
-                    if(request.getAttribute("edituser") != null) {
-                        //handle when the user is editing it's details
-                        edit = true;
-                        user = (User) request.getSession().getAttribute("user");
-                    }
-                %>
       <form class="form-horizontal" role="form" action="/Base/Main/register/post" method="post">
 
           <div class="col-md-6">
@@ -130,10 +123,10 @@
             <div class="col-sm-12">
                 <%
                     //handle response from the server, from when the form is submitted
-                    if(request.getAttribute("alreadyexists") != null) {
+                    if(View.is(request, "alreadyexists")) {
                         out.println("<p class=\"col-sm-offset-2\">A user with that email already exists.</p>");
                     }
-                    if(request.getAttribute("notvalid") != null) {
+                    if(View.is(request, "notvalid")) {
                         out.println("<p class=\"col-sm-offset-2\">Form not entered correctly</p>");
                     }
                 %>

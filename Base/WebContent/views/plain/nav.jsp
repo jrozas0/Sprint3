@@ -21,7 +21,7 @@
           <%  User loggedIn = (User) session.getAttribute("user");
             if (loggedIn != null) { %>
 
-              <li><a href="/Base/Main/profile/self">My Profile</a></li>
+              <li><a href="/Base/Main/profile?id=<%=loggedIn.getId()%>">My Profile</a></li>
 
               <li><a href="/Base/Main/courses">Courses</a></li>
 

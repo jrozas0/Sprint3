@@ -2,14 +2,21 @@ package beans.managers;
 
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+
 import beans.Course;
 import beans.User;
 
 public class UserManager {
 		
 	public static Optional<User> getByEmail(String email) {
-		return Optional.ofNullable((User) DataSource.em().createQuery("SELECT user FROM User user WHERE user.email = " + email)
-				.getSingleResult());
+		User user = null;
+		try {
+			user =(User) DataSource.em().createQuery("SELECT user FROM User user WHERE user.email = \"" + email + "\"")
+					.getSingleResult();
+		} catch (NoResultException e) {}
+		return Optional.ofNullable(user);
 	}
 	    
     public static boolean validate(String email, String password) {
@@ -30,6 +37,13 @@ public class UserManager {
 		return DataSource.em().createQuery("SELECT course FROM Userattending user WHERE user.id = '" + user.getId() + "' AND course.id = " + course.getId())
 		.getResultList().size() == 1;
 		
+	}
+	
+	public static void save(User user) {
+		EntityManager em = DataSource.em();
+		em.getTransaction().begin();
+		em.persist(user);
+		em.getTransaction().commit();
 	}
     
 }

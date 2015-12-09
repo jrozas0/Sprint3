@@ -9,14 +9,10 @@
 <jsp:include page="plain/nav.jsp"></jsp:include>
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
-            
-            <% if(View.is(request, "ok")) {  %>
-            	
-            		<h1>Welcome again!</h1>
-            	
-            <% } else { %>        	
-      
+        <div class="col-md-6">   
+        	
+          	<% if(!View.is(request, "ok")) {  %>
+                	        	
             <form class="form-horizontal" role="form" action="/Base/Main/login/post" method="post">
                 <div class="form-group">
                     <div class="col-sm-2">
@@ -42,13 +38,13 @@
           	
 	          	<%
                 //handle response from the server, from when the form is submitted
-                if(View.is(request, "notfound"))
+                if(View.is(request, "notvalid"))
                     out.println("<p class=\"col-sm-offset-2\">Not found user with that email/password combination</p>");
 	            %>
-        	</form>
+        	</form>   
         	
-        	<% } %>
-        	
+	        <% } else out.println("<h1>You are now logged in.</h1>"); %>
+        	    	
        	</div>
        	
         <h3 class="text-center col-md-6">Don't have an account?
