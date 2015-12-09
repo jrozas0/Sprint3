@@ -2,6 +2,8 @@ package http;
 
 import java.io.IOException;
 
+import javax.jms.JMSException;
+import javax.naming.NamingException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -82,6 +84,40 @@ public class MainEndpoint extends HttpServlet {
 			@Override
 			public Object handle(HttpServletRequest req, HttpServletResponse res) throws MVCException {
 				return CourseController.coursesForCat(req);
+			}
+		});
+		
+		mappings.bind("/course/chat", new RequestDelegator() {
+			@Override
+			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
+				try {
+					return CourseController.sendChat(req);
+				} catch (JMSException | NamingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
+			}
+		});
+		
+		mappings.bind("/course/chat/get", new RequestDelegator() {
+			@Override
+			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
+				try {
+					return CourseController.receiveChat(req);
+				} catch (JMSException | NamingException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return null;
+			}
+		});
+		
+		mappings.bind("/courses/teacher", View.Simple("/views/teacher/newcourse.jsp"), RequestHandler.PLAIN());
+		mappings.bind("/courses/teacher/post", new RequestDelegator() {
+			@Override
+			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
+				return CourseController.newCourse(req);
 			}
 		});
 										

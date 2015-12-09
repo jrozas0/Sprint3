@@ -29,11 +29,15 @@ public class Action {
 			request.setAttribute("in", state); //may throw runtime exception here from the controllers
 		if (state != null && (state instanceof View)) {
 			View view = ((View)state);
-			request.setAttribute("state", view.getState());
-			config.getServletContext().getRequestDispatcher(view.getPath()).forward(request, response);
-			return;
+			if (view.getPath() != "none") {
+				request.setAttribute("state", view.getState());
+				config.getServletContext().getRequestDispatcher(view.getPath()).forward(request, response);
+				return;
+			}
 		} else {
-			config.getServletContext().getRequestDispatcher(action.view.getPath()).forward(request, response);
+			String viewPath = action.view.getPath();
+			if (viewPath != "none")
+				config.getServletContext().getRequestDispatcher(action.view.getPath()).forward(request, response);
 		}
 	}
 	

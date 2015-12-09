@@ -1,3 +1,4 @@
+<%@page import="beans.managers.CourseManager"%>
 <%@page import="beans.managers.CategoryManager"%>
 <%@ page import="java.util.Optional" %>
 <%@ page import="beans.*" %>
@@ -48,7 +49,7 @@
         <div class="col-md-6">
             <h2>Highlights</h2>
             <ul class="list-group">
-                <% for (Course course : cat.get().getCourses()) {
+                <% for (Course course : CourseManager.getCourses()) {
                         if (course.isValid() && course.isHighlited()) {
                             out.print("<a href=\"/restricted/course?id=" + course.getId() + "\"><h4 class=\"list-group-item list-group-item-info\">" + course.getTitle() + "</h4></a>");
                         }
