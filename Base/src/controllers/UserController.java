@@ -20,6 +20,11 @@ public class UserController {
 	public static User getFromSession(HttpServletRequest request) {
 		return UserManager.getById((Long)(request.getSession().getAttribute("userId"))).get(); 
 	}
+	
+	public static Object logout(HttpServletRequest request) {
+		request.getSession().removeAttribute("userId");
+		return Action.onlySideEffects();
+	}
 		
     public static View register(HttpServletRequest req) {
 	        String nickname = null;
@@ -90,7 +95,7 @@ public class UserController {
         if (Action.validate(req, email, password)) {
             if (UserManager.validate(email, password)) {
                 User user = UserManager.getByEmail(email).get();
-                req.getSession().setAttribute("user", user);
+                req.getSession().setAttribute("userId", user.getId());
                 return View.FinateState("/views/login.jsp", "ok");
             } else {
             	return View.FinateState("/views/login.jsp", "notvalid");

@@ -18,12 +18,10 @@
 
         <li><a href="/Base/Main/courses">Courses</a></li>
 
-          <%  User loggedIn = (User) session.getAttribute("user");
-            if (loggedIn != null) { %>
+          <%  Integer userId = (Integer) session.getAttribute("userId");
+            if (userId != null) { %>
 
-              <li><a href="/Base/Main/profile?id=<%=loggedIn.getId()%>">My Profile</a></li>
-
-              <li><a href="/Base/Main/courses">Courses</a></li>
+              <li><a href="/Base/Main/profile?id=<%=userId%>">My Profile</a></li>
 
               <li><a href="/Base/Main/logout">Logout</a></li>
 

@@ -50,6 +50,10 @@ public class Action {
 		}
 	}
 	
+	public static Object onlySideEffects() {
+		return new Integer(1);
+	}
+	
     //helper for validating inputs
     public static boolean validate(HttpServletRequest req, Object... input) {
         for(int i = 0; i < input.length; i++) {

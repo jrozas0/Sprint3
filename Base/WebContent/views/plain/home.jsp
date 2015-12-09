@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="lib.controllers.View" %>
 <html>
 <head>
     <jsp:include page="assets.jsp"></jsp:include>
@@ -9,7 +10,7 @@
 
 <div class="container">
     <div class="row" style="padding: 100px;">
-        <% if(request.getAttribute("loggedout") != null) { %>
+        <% if(View.is(request, "loggedout")) { %>
             <h1 class="text-center">See ya!</h1>
         <% } else { %>
             <h1 class="text-center">Welcome</h1>

@@ -71,6 +71,13 @@ public class MainEndpoint extends HttpServlet {
 			}
 		});
 		
+		mappings.bind("/logout", View.FinateState("/views/plain/home.jsp", "loggedout"), new RequestHandler() {
+			@Override
+			public Object handle(HttpServletRequest request, HttpServletResponse response) throws MVCException {
+				return UserController.logout(request);
+			}
+		});
+		
 		mappings.bind("/courses", View.Simple("/views/courses.jsp"), new RequestHandler() {
 			@Override
 			public Object handle(HttpServletRequest req, HttpServletResponse res) throws MVCException {

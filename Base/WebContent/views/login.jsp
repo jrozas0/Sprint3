@@ -47,11 +47,16 @@
         	    	
        	</div>
        	
-        <h3 class="text-center col-md-6">Don't have an account?
-            <b>
-                <a class="signUp" href="/Base/Main/register">Sign Up!</a>
-            </b>
-        </h3>
+    	<% if(!View.is(request, "ok")) {  %>
+    	
+	        <h3 class="text-center col-md-6">Don't have an account?
+	            <b>
+	                <a class="signUp" href="/Base/Main/register">Sign Up!</a>
+	            </b>
+	        </h3>
+    	
+    	<% } %>
+       	
     </div>
 </div>
 </body>
