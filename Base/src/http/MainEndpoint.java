@@ -92,7 +92,7 @@ public class MainEndpoint extends HttpServlet {
 			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
 				try {
 					return CourseController.sendChat(req);
-				} catch (JMSException | NamingException e) {
+				} catch (ServletException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -100,12 +100,13 @@ public class MainEndpoint extends HttpServlet {
 			}
 		});
 		
+		mappings.bind("/course/chat/show", View.Simple("/views/chat.jsp"), RequestHandler.PLAIN());
 		mappings.bind("/course/chat/get", new RequestDelegator() {
 			@Override
 			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
 				try {
-					return CourseController.receiveChat(req);
-				} catch (JMSException | NamingException | IOException e) {
+					return CourseController.readChat(req, res);
+				} catch (IOException | ServletException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
