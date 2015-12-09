@@ -46,5 +46,6 @@
         </h3>
     </div>
 </div>
+<jsp:include page="plain/footer.jsp"></jsp:include>
 </body>
 </html>
