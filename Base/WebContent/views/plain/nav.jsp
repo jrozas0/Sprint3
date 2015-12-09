@@ -9,27 +9,25 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">DokkuLearning</a>
+      <a class="navbar-brand" href="/Base/Main/home">DokkuLearning</a>
     </div>
     <div class="collapse navbar-collapse" id="navbar-ex-collapse">
       <ul class="nav navbar-nav navbar-right">
 
-        <li><a href="/">Home</a></li>
+        <li><a href="/Base/Main/home">Home</a></li>
 
-        <li><a href="/courses">Courses</a></li>
+        <li><a href="/Base/Main/courses">Courses</a></li>
 
-          <%  User loggedIn = (User) session.getAttribute("user");
-            if (loggedIn != null) { %>
+          <%  Integer userId = (Integer) session.getAttribute("userId");
+            if (userId != null) { %>
 
-              <li><a href="<%="/profile?id=" + loggedIn.getId()%>">My Profile</a></li>
+              <li><a href="/Base/Main/profile?id=<%=userId%>">My Profile</a></li>
 
-              <li><a href="/courses">Courses</a></li>
-
-              <li><a href="/logout">Logout</a></li>
+              <li><a href="/Base/Main/logout">Logout</a></li>
 
         <%  } else { %>
 
-              <li><a href="/login">Login</a></li>
+              <li><a href="/Base/Main/login">Login</a></li>
 
           <% } %>
       </ul>

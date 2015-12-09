@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="lib.controllers.View" %>
 <html>
 <head>
     <jsp:include page="plain/assets.jsp"></jsp:include>
@@ -8,8 +9,11 @@
 <jsp:include page="plain/nav.jsp"></jsp:include>
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
-            <form class="form-horizontal" role="form" action="login" method="post">
+        <div class="col-md-6">   
+        	
+          	<% if(!View.is(request, "ok")) {  %>
+                	        	
+            <form class="form-horizontal" role="form" action="/Base/Main/login/post" method="post">
                 <div class="form-group">
                     <div class="col-sm-2">
                         <label for="inputEmail3" class="control-label">Email</label>
@@ -31,19 +35,28 @@
                         <button type="submit" class="btn btn-default btn-lg">Log In</button>
                     </div>
                 </div>
-                    <%
+          	
+	          	<%
                 //handle response from the server, from when the form is submitted
-                if(request.getAttribute("notfound") != null) {
+                if(View.is(request, "notvalid"))
                     out.println("<p class=\"col-sm-offset-2\">Not found user with that email/password combination</p>");
-                }
-            %>
-        </div>
-        </form>
-        <h3 class="text-center col-md-6">Don't have an account?
-            <b>
-                <a class="signUp" href="register">Sign Up!</a>
-            </b>
-        </h3>
+	            %>
+        	</form>   
+        	
+	        <% } else out.println("<h1>You are now logged in.</h1>"); %>
+        	    	
+       	</div>
+       	
+    	<% if(!View.is(request, "ok")) {  %>
+    	
+	        <h3 class="text-center col-md-6">Don't have an account?
+	            <b>
+	                <a class="signUp" href="/Base/Main/register">Sign Up!</a>
+	            </b>
+	        </h3>
+    	
+    	<% } %>
+       	
     </div>
 </div>
 <jsp:include page="plain/footer.jsp"></jsp:include>

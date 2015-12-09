@@ -8,22 +8,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import lib.controllers.ex.MVCException;
+import lib.controllers.ex.NotFound;
 
 public class Action {
 
-	public String view;
-	public RequestHandler handler;
+	public View view;
+	public Handler handler;
 	
-	public Action(String view, RequestHandler handler) {
+	public Action(View view, Handler handler) {
 		this.view = view;
 		this.handler = handler;
 	}
 	
 	private static void Apply(Bindabble mappings, ServletConfig config, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, MVCException {
 		Action action = mappings.get(request.getPathInfo());
-		if (action.handler != null)
-			request.setAttribute("in", action.handler.handle(request, response)); //may throw runtime exception here from the controllers
-		config.getServletContext().getRequestDispatcher(action.view).forward(request, response);
+		if (action == null) throw new NotFound();
+		Object state = null;
+		if (action.handler != null && !(state instanceof View))
+			state = action.handler.apply(request, response);
+			request.setAttribute("in", state); //may throw runtime exception here from the controllers
+		if (state != null && (state instanceof View)) {
+			View view = ((View)state);
+			request.setAttribute("state", view.getState());
+			config.getServletContext().getRequestDispatcher(view.getPath()).forward(request, response);
+			return;
+		} else {
+			config.getServletContext().getRequestDispatcher(action.view.getPath()).forward(request, response);
+		}
 	}
 	
 	private static void sendError(lib.controllers.ex.Error error, ServletConfig config, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,5 +49,20 @@ public class Action {
 			Action.sendError(e.getError(), config, request, response);
 		}
 	}
+	
+	public static Object onlySideEffects() {
+		return new Integer(1);
+	}
+	
+    //helper for validating inputs
+    public static boolean validate(HttpServletRequest req, Object... input) {
+        for(int i = 0; i < input.length; i++) {
+            if (input[i] == null)  {
+                return false;
+            }
+        }
+        return true;
+    }	
+
 			
 }

@@ -9,10 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controllers.StudentController;
+import controllers.CourseController;
+import controllers.UserController;
 import lib.controllers.Action;
 import lib.controllers.Bindabble;
+import lib.controllers.RequestDelegator;
 import lib.controllers.RequestHandler;
+import lib.controllers.View;
 import lib.controllers.ex.MVCException;
 
 @WebServlet("/Main/*")
@@ -33,14 +36,55 @@ public class MainEndpoint extends HttpServlet {
 	private void bindPaths() {
 		mappings = new Bindabble();
 		
-		mappings.bind("/", "/views/plain/home.jsp", RequestHandler.PLAIN());
+		//Basic navigation with no state. These are basic bindings for redirecting to static views
+		//based on the path requested
+		mappings.bind("/home", View.Simple("/views/plain/home.jsp"), RequestHandler.PLAIN());
+		mappings.bind("/login", View.Simple("/views/login.jsp"), RequestHandler.PLAIN());
+		mappings.bind("/register", View.Simple("/views/register.jsp"), RequestHandler.PLAIN());
 		
-		mappings.bind("/courses", "/views/courses.jsp", new RequestHandler() {
+		//a request handler is a class, which by calling it's only method, will apply the state returned
+		//from it to the view. View which will be rendered using these attributes set in the request.
+		mappings.bind("/profile", View.Simple("/views/profile.jsp"), new RequestHandler() {
 			@Override
-			public Object handle(HttpServletRequest request, HttpServletResponse response) throws MVCException {
-				return StudentController.getCourses(request);
+			public Object handle(HttpServletRequest req, HttpServletResponse res) throws MVCException {
+				return UserController.userProfile(req);
 			}
 		});
+		
+		//a request delegator is a controller that is likewise executed on a certain path,
+		//but instead of rendering a view based on it's returned values, will redirect to another view
+		//this is specially useful if we want to treat views as finite state machines, which for instance
+		//parameter validation will lead to it's state change and ence visual representation.
+		//In this case, we are checking the user post request, and based on it's validity we add a 
+		//specific state to the view in a dynamic way
+		mappings.bind("/register/post", new RequestDelegator() {
+			@Override
+			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
+				return UserController.register(req);
+			}
+		});
+		
+		mappings.bind("/login/post", new RequestDelegator() {
+			@Override
+			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
+				return UserController.login(req);
+			}
+		});
+		
+		mappings.bind("/logout", View.FinateState("/views/plain/home.jsp", "loggedout"), new RequestHandler() {
+			@Override
+			public Object handle(HttpServletRequest request, HttpServletResponse response) throws MVCException {
+				return UserController.logout(request);
+			}
+		});
+		
+		mappings.bind("/courses", View.Simple("/views/courses.jsp"), new RequestHandler() {
+			@Override
+			public Object handle(HttpServletRequest req, HttpServletResponse res) throws MVCException {
+				return CourseController.coursesForCat(req);
+			}
+		});
+										
 	}
 	    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {        

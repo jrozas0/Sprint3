@@ -25,7 +25,7 @@
                     <div class="row">
                         <h1><%= user.getName()%> <%= user.getSurname()%></h1>
                         <br>
-                        <img style="height: 100px; width: 100px;" src="/profile/picture?id=<%=%>">
+                        <img style="height: 100px; width: 100px;" src="/profile/picture?id=">
                         <br>
                         <br>
                         <br>

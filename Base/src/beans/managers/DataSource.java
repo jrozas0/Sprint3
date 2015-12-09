@@ -9,7 +9,7 @@ public class DataSource {
 	private static EntityManagerFactory factory;
 			
 	static {
-		factory = Persistence.createEntityManagerFactory("Dokku");
+		factory = Persistence.createEntityManagerFactory("Base");
 	}
 	
 	public static EntityManager em() {
