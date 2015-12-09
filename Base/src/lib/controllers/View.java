@@ -38,6 +38,10 @@ public class View {
 		return new View(path);
 	}
 	
+	public static View Ok() {
+		return new View("none");
+	}
+	
 	public static View FinateState(String path, String state) {
 		return new View(path, state);
 	}
