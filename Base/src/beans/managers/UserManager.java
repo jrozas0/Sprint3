@@ -20,7 +20,7 @@ public class UserManager {
 	}
 	    
     public static boolean validate(String email, String password) {
-        return DataSource.em().createQuery("SELECT user FROM User user WHERE user.email = '" + email + "' AND user.password = " + password)
+        return DataSource.em().createQuery("SELECT user FROM User user WHERE user.email = \"" + email +"\" AND user.password = " + "\"" + password +  "\"")
                 .getResultList().size() == 1;
     }
     
