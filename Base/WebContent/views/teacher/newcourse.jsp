@@ -1,4 +1,5 @@
 <%@ page import="java.util.Optional" %>
+<%@page import="beans.managers.CategoryManager"%>
 <%@ page import="beans.*" %>
 <%@ page import="java.util.function.Predicate" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -12,21 +13,12 @@
   <div class="container">
     <div class="row">
 
-        <%  //controller code for deciding weather the jsp will be in edit mode or submit
-            boolean updating = false;
-            Course editing = null;
-            String courseIdEdit = request.getParameter("edit");
-            if (courseIdEdit != null) {
-                long courseId = Long.parseLong(courseIdEdit);
-                Optional<Course> course = Course.getTable(Course.class).getById(courseId);
-                if (course.isPresent()) {
-                    updating = true;
-                    editing = course.get();
-                }
-            }
-        %>
 
-        <% if(request.getAttribute("saved") != null) { %>
+        <% 
+        
+        Optional<Category> cat = (Optional<Category>)request.getAttribute("in");
+        
+        if(request.getAttribute("saved") != null) { %>
 
             <h1>Your course was saved!</h1>
             <h3>You will now await administrator confirmation</h3>
@@ -40,7 +32,7 @@
                             <label class="control-label" >Title</label>
                         </div>
                         <div class="col-sm-10">
-                            <input type="text" name="title" class="form-control" value="<% if (updating) out.print(editing.getTitle());%>">
+                            <input type="text" name="title" class="form-control" value="<% out.print(request.getParameter("title"));%>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -48,7 +40,7 @@
                             <label class="control-label" >Description</label>
                         </div>
                         <div class="col-sm-10">
-                            <input type="text" name="description" class="form-control" value="<% if (updating) out.print(editing.getDescription());%>">
+                            <input type="text" name="description" class="form-control" value="<%out.print(request.getParameter("description"));%>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -56,7 +48,7 @@
                             <label class="control-label" >Duration (hours)</label>
                         </div>
                         <div class="col-sm-10">
-                            <input type="number"  name="duration" class="form-control" value="<% if (updating) out.print(editing.getDuration());%>">
+                            <input type="number"  name="duration" class="form-control" value="<%out.print(request.getParameter("duration"));%>">
                         </div>
                     </div>
 
@@ -75,9 +67,9 @@
                         </div>
                         <div class="col-sm-10">
                             <select name="category" id="category">
-                                <% if (updating) out.print("<option value=\"" + editing.getCategory().getName() + "\">" + editing.getCategory().getName() + "</option>");%>
-                                <% for(Category cat : Category.getTable(Category.class).allAsList()) {
-                                    out.print("<option value=\"" + cat.getName() + "\">" + cat.getName() + "</option>");
+                                <% out.print("<option value=\"" + cat.get().getName() + "\">" + cat.get().getName() + "</option>");%>
+                                <% for(Category cat1 : CategoryManager.getAll()) {
+                                    out.print("<option value=\"" + cat1.getName() + "\">" + cat1.getName() + "</option>");
                                 } %>
                             </select>
                         </div>
@@ -94,7 +86,7 @@
                         <div class="col-sm-2">
                             <label class="control-label" >Syllabus</label></div>
                         <div class="col-sm-10">
-                            <input type="textarea"  name="syllabus" class="form-control" value="<% if (updating) out.print(editing.getSyllabus());%>">
+                            <input type="textarea"  name="syllabus" class="form-control" value="<%out.print(request.getParameter("syllabus"));%>">
                         </div>
                     </div>
 
@@ -103,7 +95,7 @@
                             <label class="control-label" >Price</label>
                         </div>
                         <div class="col-sm-10">
-                            <input type="number" name="price"  class="form-control" value="<% if (updating) out.print(editing.getPrice());%>">
+                            <input type="number" name="price"  class="form-control" value="<%out.print(request.getParameter("syllabus"));%>">
                         </div>
                     </div>
 
@@ -112,7 +104,7 @@
                             <label class="control-label" >Difficulty</label>
                         </div>
                         <div class="col-sm-10">
-                            <input type="range" name="difficulty"  min="1" max="3" class="" value="<% if (updating) out.print(editing.getDifficulty());%>">
+                            <input type="range" name="difficulty"  min="1" max="3" class="" value="<%out.print(request.getParameter("difficulty"));%>">
                         </div>
                     </div>
 

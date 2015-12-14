@@ -39,6 +39,12 @@ public class UserManager {
 		
 	}
 	
+	public static boolean userIsTeaching(User user, Course course){
+		return DataSource.em().createQuery("SELECT course FROM Userteaching user WHERE user.id = '" + user.getId() + "' AND course.id = " + course.getId())
+		.getResultList().size() == 1;
+		
+	}
+	
 	public static void save(User user) {
 		EntityManager em = DataSource.em();
 		em.getTransaction().begin();

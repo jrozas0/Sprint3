@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <jsp:include page="/common/assets.jsp"></jsp:include>
+  <jsp:include page="/../views/plain/assets.jsp"></jsp:include>
   <title></title>
 </head>
 <body>
-<jsp:include page="/common/nav.jsp"></jsp:include>
+<jsp:include page="/../views/plain/nav.jsp"></jsp:include>
 
     <div class="container">
         <div class="row">

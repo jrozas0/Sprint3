@@ -348,6 +348,12 @@ public class User implements Serializable {
 		return UserManager.userIsAttending(this, course);
 		
 	}
+	
+	public boolean isTeaching(Course course){
+		
+		return UserManager.userIsTeaching(this, course);
+		
+	}
 
 
 }

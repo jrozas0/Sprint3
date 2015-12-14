@@ -1,4 +1,4 @@
-<%@ page import="Models.Lesson" %>
+<%@ page import="beans.Lesson" %>
 <%@ page import="java.util.Optional" %>
 
 <div class="">

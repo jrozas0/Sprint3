@@ -3,7 +3,6 @@
 	<persistence-unit name="Base" transaction-type="RESOURCE_LOCAL">
 		<class>beans.Category</class>
 		<class>beans.Certificate</class>
-		<class>beans.Course</class>
 		<class>beans.Interest</class>
 		<class>beans.Lesson</class>
 		<class>beans.Material</class>
