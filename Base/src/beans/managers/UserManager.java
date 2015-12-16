@@ -1,5 +1,6 @@
 package beans.managers;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -50,6 +51,10 @@ public class UserManager {
 		em.getTransaction().begin();
 		em.persist(user);
 		em.getTransaction().commit();
+	}
+	
+	public static List<User> getUsers(){
+		return DataSource.em().createNamedQuery("User.findAll").getResultList();
 	}
     
 }

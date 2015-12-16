@@ -76,10 +76,6 @@ public class Section implements Serializable {
 	public Course getCourse() {
 		return this.course;
 	}
-	
-	public static Course getThisCourse(){
-		return getCourse();
-	}
 
 	public void setCourse(Course course) {
 		this.course = course;
