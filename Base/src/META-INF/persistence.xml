@@ -3,15 +3,16 @@
 	<persistence-unit name="Base" transaction-type="RESOURCE_LOCAL">
 		<class>beans.Category</class>
 		<class>beans.Certificate</class>
+		<class>beans.Course</class>
 		<class>beans.Interest</class>
 		<class>beans.Lesson</class>
 		<class>beans.Material</class>
 		<class>beans.Section</class>
+		<class>beans.User</class>
 		<class>beans.Userattending</class>
 		<class>beans.Userinterest</class>
 		<class>beans.Userteaching</class>
 		<class>beans.Userwishing</class>
-		<class>beans.User</class>
 		<properties>
 			<property name="javax.persistence.jdbc.user" value="root"/>
 			<property name="javax.persistence.jdbc.password" value="admin"/>

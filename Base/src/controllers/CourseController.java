@@ -47,65 +47,31 @@ public class CourseController {
 	
 	
 	public static View newCourse(HttpServletRequest req) {
-		
-		int id = 0;
-		byte denied = 0;
-		String deniedInput = null;
 		String description = null;
 		BigInteger difficulty = null;
 		BigInteger duration = null;
-		byte highlighted = 0;
-		String highlightedInput = null;
-		String picture = null;
 		int price = 0;
 		int promotionPrice = 0;
-		boolean isDiscounted = false;
 		String discountedInput = null;
 		String syllabus = null;
 		String title = null;
-		byte valid = 0;
-		String validInput = null;
 		
-		id = Integer.parseInt(req.getParameter("id"));
-		deniedInput = req.getParameter("denied");
-		if (deniedInput!= null){
-			denied = 1;
-		}
 		description = req.getParameter("description");
 		difficulty = new BigInteger(req.getParameter("difficulty"));
 		duration = new BigInteger(req.getParameter("duration"));
-		highlightedInput = req.getParameter("highlighted");
-		if(highlightedInput != null){
-			highlighted = 1;
-		}
-		picture = req.getParameter("picture");
 		price = Integer.parseInt(req.getParameter("price"));
 		promotionPrice = Integer.parseInt(req.getParameter("promotionPrice"));
-		discountedInput = req.getParameter("isDiscounted");
-		if (discountedInput != null ){
-			isDiscounted = true;
-		}
 		syllabus = req.getParameter("syllabus");
 		title = req.getParameter("title");
-		validInput = req.getParameter("valid");
-		if(validInput != null){
-			valid = 1;
-		}
-        if (Action.validate(req, id,denied, description, difficulty, duration, highlighted, picture, price, promotionPrice, discountedInput, syllabus, title, valid)) {
+        if (Action.validate(req, description, difficulty, duration, price, promotionPrice, discountedInput, syllabus, title)) {
 		
 		Course course = new Course();
-		course.setId(id);
-		course.setDenied(denied);
 		course.setDescription(description);
 		course.setDifficulty(difficulty);
 		course.setDuration(duration);
-		course.setHighlighted(highlighted);
-		course.setPicture(picture);
 		course.setPrice(price);
 		course.setPromotionPrice(promotionPrice);
-		course.setDisccounted(isDiscounted);
 		course.setSyllabus(syllabus);
-		course.setValid(valid);
 		course.setTitle(title);
 		
 		CourseManager.save(course);

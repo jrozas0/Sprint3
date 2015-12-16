@@ -1,11 +1,7 @@
 package beans;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
-import beans.managers.UserManager;
-
 import java.util.List;
 
 
@@ -13,60 +9,47 @@ import java.util.List;
  * The persistent class for the USER database table.
  * 
  */
+@Entity
 @Table(name="USER")
-@Entity(name="User")
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private int id;
 
-	@Column(nullable=false, length=45)
 	private String address;
 
-	@Column(nullable=false)
 	private int age;
 
-	@Column(nullable=false, length=255)
 	private String description;
 
-	@Column(nullable=false, length=255)
 	private String email;
 
-	@Column(nullable=false, length=45)
 	private String name;
 
-	@Column(nullable=false, length=255)
 	private String nick;
 
-	@Column(nullable=false, length=255)
 	private String password;
 
-	@Column(nullable=false, length=255)
 	private String paymentData;
 
-	@Column(nullable=false)
 	private int phone;
 
 	@Lob
 	private byte[] pic;
 
-	@Column(nullable=false, length=45)
 	private String surname;
 
-	@Column(nullable=false, length=45)
 	private String type;
-
-	//bi-directional many-to-one association to Certificate
-	@OneToMany(mappedBy="user")
-	private List<Certificate> certificates;
 
 	//bi-directional many-to-one association to Course
 	@OneToMany(mappedBy="user")
 	private List<Course> courses;
+
+	//bi-directional many-to-one association to Certificate
+	@OneToMany(mappedBy="user")
+	private List<Certificate> certificates;
 
 	//bi-directional many-to-one association to Userattending
 	@OneToMany(mappedBy="user")
@@ -191,28 +174,6 @@ public class User implements Serializable {
 		this.type = type;
 	}
 
-	public List<Certificate> getCertificates() {
-		return this.certificates;
-	}
-
-	public void setCertificates(List<Certificate> certificates) {
-		this.certificates = certificates;
-	}
-
-	public Certificate addCertificate(Certificate certificate) {
-		getCertificates().add(certificate);
-		certificate.setUser(this);
-
-		return certificate;
-	}
-
-	public Certificate removeCertificate(Certificate certificate) {
-		getCertificates().remove(certificate);
-		certificate.setUser(null);
-
-		return certificate;
-	}
-
 	public List<Course> getCourses() {
 		return this.courses;
 	}
@@ -233,6 +194,28 @@ public class User implements Serializable {
 		cours.setUser(null);
 
 		return cours;
+	}
+
+	public List<Certificate> getCertificates() {
+		return this.certificates;
+	}
+
+	public void setCertificates(List<Certificate> certificates) {
+		this.certificates = certificates;
+	}
+
+	public Certificate addCertificate(Certificate certificate) {
+		getCertificates().add(certificate);
+		certificate.setUser(this);
+
+		return certificate;
+	}
+
+	public Certificate removeCertificate(Certificate certificate) {
+		getCertificates().remove(certificate);
+		certificate.setUser(null);
+
+		return certificate;
 	}
 
 	public List<Userattending> getUserattendings() {
@@ -282,7 +265,7 @@ public class User implements Serializable {
 	public List<Userteaching> getUserteachings() {
 		return this.userteachings;
 	}
-	
+
 	public void setUserteachings(List<Userteaching> userteachings) {
 		this.userteachings = userteachings;
 	}
@@ -322,38 +305,5 @@ public class User implements Serializable {
 
 		return userwishing;
 	}
-	
-	public boolean isTeacher() {
-			
-			if (this.getType().compareTo("teacher") == 0){
-				return true;
-			
-			} else {
-				return false;
-			}
-	}
-	
-	public boolean isStudent() {
-		
-		if (this.getType().compareTo("student") == 0){
-			return true;
-		
-		} else {
-			return false;
-		}
-}
-	
-	public boolean isAttending(Course course){
-		
-		return UserManager.userIsAttending(this, course);
-		
-	}
-	
-	public boolean isTeaching(Course course){
-		
-		return UserManager.userIsTeaching(this, course);
-		
-	}
-
 
 }

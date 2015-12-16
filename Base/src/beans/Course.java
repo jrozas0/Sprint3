@@ -1,11 +1,7 @@
 package beans;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
-import beans.managers.CourseManager;
-
 import java.math.BigInteger;
 import java.util.List;
 
@@ -21,55 +17,44 @@ public class Course implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private int id;
 
-	@Column(nullable=false)
+	private BigInteger adminDiscount;
+
 	private byte denied;
 
-	@Column(nullable=false, length=255)
 	private String description;
 
-	@Column(nullable=false)
 	private BigInteger difficulty;
 
-	@Column(nullable=false)
+	private byte discounted;
+
 	private BigInteger duration;
 
-	@Column(nullable=false)
 	private byte highlighted;
 
-	@Column(nullable=false, length=45)
 	private String picture;
 
-	@Column(nullable=false)
 	private int price;
 
-	@Column(nullable=false)
 	private int promotionPrice;
-	
-	@Column(nullable=false)
-	private boolean isDiscounted;
 
-
-	@Column(nullable=false, length=255)
 	private String syllabus;
 
-	@Column(nullable=false, length=45)
+	private BigInteger teacherDiscount;
+
 	private String title;
 
-	@Column(nullable=false)
 	private byte valid;
 
 	//bi-directional many-to-one association to Category
-	@ManyToOne(cascade={CascadeType.REFRESH})
-	@JoinColumn(name="Category_id", nullable=false)
+	@ManyToOne
+	@JoinColumn(name="Category_id")
 	private Category category;
 
 	//bi-directional many-to-one association to User
-	@ManyToOne(cascade={CascadeType.REMOVE})
-	@JoinColumn(name="owner", nullable=false)
+	@ManyToOne
+	@JoinColumn(name="owner")
 	private User user;
 
 	//bi-directional many-to-one association to Section
@@ -99,12 +84,16 @@ public class Course implements Serializable {
 		this.id = id;
 	}
 
+	public BigInteger getAdminDiscount() {
+		return this.adminDiscount;
+	}
+
+	public void setAdminDiscount(BigInteger adminDiscount) {
+		this.adminDiscount = adminDiscount;
+	}
+
 	public byte getDenied() {
 		return this.denied;
-	}
-	
-	public boolean isDenied() {
-		return getDenied() == 0;
 	}
 
 	public void setDenied(byte denied) {
@@ -126,13 +115,13 @@ public class Course implements Serializable {
 	public void setDifficulty(BigInteger difficulty) {
 		this.difficulty = difficulty;
 	}
-	
-	public void setDisccounted(boolean  discounted){
-		this.isDiscounted = discounted;
+
+	public byte getDiscounted() {
+		return this.discounted;
 	}
-	
-	public boolean getDiscounted(){
-		return this.isDiscounted;
+
+	public void setDiscounted(byte discounted) {
+		this.discounted = discounted;
 	}
 
 	public BigInteger getDuration() {
@@ -147,10 +136,6 @@ public class Course implements Serializable {
 		return this.highlighted;
 	}
 
-	public boolean isHighlited(){
-		return getHighlighted() == 0;
-	}
-	
 	public void setHighlighted(byte highlighted) {
 		this.highlighted = highlighted;
 	}
@@ -187,6 +172,14 @@ public class Course implements Serializable {
 		this.syllabus = syllabus;
 	}
 
+	public BigInteger getTeacherDiscount() {
+		return this.teacherDiscount;
+	}
+
+	public void setTeacherDiscount(BigInteger teacherDiscount) {
+		this.teacherDiscount = teacherDiscount;
+	}
+
 	public String getTitle() {
 		return this.title;
 	}
@@ -197,10 +190,6 @@ public class Course implements Serializable {
 
 	public byte getValid() {
 		return this.valid;
-	}
-	
-	public boolean isValid() {
-		return getValid() == 0;
 	}
 
 	public void setValid(byte valid) {
@@ -307,6 +296,7 @@ public class Course implements Serializable {
 	public Userwishing removeUserwishing(Userwishing userwishing) {
 		getUserwishings().remove(userwishing);
 		userwishing.setCourse(null);
+
 		return userwishing;
 	}
 

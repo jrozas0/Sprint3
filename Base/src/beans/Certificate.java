@@ -15,19 +15,15 @@ public class Certificate implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private int id;
 
-	@Column(nullable=false, length=255)
 	private String certificateHash;
 
-	@Column(length=45)
 	private String courseSeed;
 
 	//bi-directional many-to-one association to User
-	@ManyToOne(cascade={CascadeType.REMOVE})
-	@JoinColumn(name="User_id", nullable=false)
+	@ManyToOne
+	@JoinColumn(name="User_id")
 	private User user;
 
 	public Certificate() {

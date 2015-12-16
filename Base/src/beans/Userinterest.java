@@ -15,18 +15,16 @@ public class Userinterest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private int id;
 
 	//bi-directional many-to-one association to User
-	@ManyToOne(cascade={CascadeType.REMOVE})
-	@JoinColumn(name="USER_id", nullable=false)
+	@ManyToOne
+	@JoinColumn(name="USER_id")
 	private User user;
 
 	//bi-directional many-to-one association to Interest
-	@ManyToOne(cascade={CascadeType.REFRESH})
-	@JoinColumn(name="INTEREST_id", nullable=false)
+	@ManyToOne
+	@JoinColumn(name="INTEREST_id")
 	private Interest interest;
 
 	public Userinterest() {

@@ -16,11 +16,8 @@ public class Section implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private int id;
 
-	@Column(nullable=false, length=45)
 	private String description;
 
 	//bi-directional many-to-one association to Lesson
@@ -28,8 +25,8 @@ public class Section implements Serializable {
 	private List<Lesson> lessons;
 
 	//bi-directional many-to-one association to Course
-	@ManyToOne(cascade={CascadeType.REFRESH})
-	@JoinColumn(name="COURSE_id", nullable=false)
+	@ManyToOne
+	@JoinColumn(name="COURSE_id")
 	private Course course;
 
 	public Section() {

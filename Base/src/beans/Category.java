@@ -1,11 +1,7 @@
 package beans;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
-
-import beans.managers.CategoryManager;
-
 import java.util.List;
 
 
@@ -20,11 +16,8 @@ public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private int id;
 
-	@Column(length=45)
 	private String name;
 
 	//bi-directional many-to-one association to Course
@@ -68,7 +61,8 @@ public class Category implements Serializable {
 	public Course removeCours(Course cours) {
 		getCourses().remove(cours);
 		cours.setCategory(null);
+
 		return cours;
 	}
-	
+
 }

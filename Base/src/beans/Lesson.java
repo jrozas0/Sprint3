@@ -15,21 +15,18 @@ public class Lesson implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private int id;
 
-	@Column(nullable=false, length=45)
 	private String description;
 
 	//bi-directional many-to-one association to Section
-	@ManyToOne(cascade={CascadeType.REFRESH})
-	@JoinColumn(name="SECTION_id", nullable=false)
+	@ManyToOne
+	@JoinColumn(name="SECTION_id")
 	private Section section;
 
 	//bi-directional many-to-one association to Material
 	@ManyToOne
-	@JoinColumn(name="MATERIAL_id", nullable=false)
+	@JoinColumn(name="MATERIAL_id")
 	private Material material;
 
 	public Lesson() {
@@ -66,6 +63,5 @@ public class Lesson implements Serializable {
 	public void setMaterial(Material material) {
 		this.material = material;
 	}
-
 
 }
