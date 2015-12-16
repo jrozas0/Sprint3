@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.util.Enumeration;
 import java.util.Optional;
 
@@ -20,7 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import beans.Category;
+import beans.Course;
 import beans.managers.CategoryManager;
+import beans.managers.CourseManager;
 import lib.controllers.Action;
 import lib.controllers.View;
 import lib.controllers.ex.BadRequest;
@@ -36,8 +39,74 @@ public class CourseController {
 		else return Optional.ofNullable(CategoryManager.getById(id));
 	}
 	
+	
 	public static View newCourse(HttpServletRequest req) {
-		return View.Simple("");
+		
+		int id = 0;
+		byte denied = 0;
+		String deniedInput = null;
+		String description = null;
+		BigInteger difficulty = null;
+		BigInteger duration = null;
+		byte highlighted = 0;
+		String highlightedInput = null;
+		String picture = null;
+		int price = 0;
+		int promotionPrice = 0;
+		boolean isDiscounted = false;
+		String discountedInput = null;
+		String syllabus = null;
+		String title = null;
+		byte valid = 0;
+		String validInput = null;
+		
+		id = Integer.parseInt(req.getParameter("id"));
+		deniedInput = req.getParameter("denied");
+		if (deniedInput!= null){
+			denied = 1;
+		}
+		description = req.getParameter("description");
+		difficulty = new BigInteger(req.getParameter("difficulty"));
+		duration = new BigInteger(req.getParameter("duration"));
+		highlightedInput = req.getParameter("highlighted");
+		if(highlightedInput != null){
+			highlighted = 1;
+		}
+		picture = req.getParameter("picture");
+		price = Integer.parseInt(req.getParameter("price"));
+		promotionPrice = Integer.parseInt(req.getParameter("promotionPrice"));
+		discountedInput = req.getParameter("isDiscounted");
+		if (discountedInput != null ){
+			isDiscounted = true;
+		}
+		syllabus = req.getParameter("syllabus");
+		title = req.getParameter("title");
+		validInput = req.getParameter("valid");
+		if(validInput != null){
+			valid = 1;
+		}
+        if (Action.validate(req, id,denied, description, difficulty, duration, highlighted, picture, price, promotionPrice, discountedInput, syllabus, title, valid)) {
+		
+		Course course = new Course();
+		course.setId(id);
+		course.setDenied(denied);
+		course.setDescription(description);
+		course.setDifficulty(difficulty);
+		course.setDuration(duration);
+		course.setHighlighted(highlighted);
+		course.setPicture(picture);
+		course.setPrice(price);
+		course.setPromotionPrice(promotionPrice);
+		course.setDisccounted(isDiscounted);
+		course.setSyllabus(syllabus);
+		course.setValid(valid);
+		course.setTitle(title);
+		
+		CourseManager.save(course);
+		return View.FinateState("/views/course.jsp", "ok");
+        }else{
+        	throw new BadRequest();
+        }
 	}
 	
 	public static View sendChat(HttpServletRequest req) throws JMSException, NamingException {
