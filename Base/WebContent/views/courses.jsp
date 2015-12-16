@@ -1,6 +1,6 @@
 <%@page import="beans.managers.CourseManager"%>
 <%@page import="beans.managers.CategoryManager"%>
-<%@ page import="java.util.Optional" %>
+<%@ page import="java.util.*" %>
 <%@ page import="beans.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>

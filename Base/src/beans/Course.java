@@ -48,6 +48,10 @@ public class Course implements Serializable {
 
 	@Column(nullable=false)
 	private int promotionPrice;
+	
+	@Column(nullable=false)
+	private boolean isDiscounted;
+
 
 	@Column(nullable=false, length=255)
 	private String syllabus;
@@ -121,6 +125,14 @@ public class Course implements Serializable {
 
 	public void setDifficulty(BigInteger difficulty) {
 		this.difficulty = difficulty;
+	}
+	
+	public void setDisccounted(boolean  discounted){
+		this.isDiscounted = discounted;
+	}
+	
+	public boolean getDiscounted(){
+		return this.isDiscounted;
 	}
 
 	public BigInteger getDuration() {

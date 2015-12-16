@@ -1,16 +1,19 @@
-<%@ page import="java.util.Optional" %>
-<%@ page import="Models.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="beans.*" %>
+<%@page import="beans.managers.LessonManager"%>
+<%@ page import="controllers.UserController" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <jsp:include page="../common/assets.jsp"></jsp:include>
+    <jsp:include page="../plain/assets.jsp"></jsp:include>
     <title></title>
 </head>
 <body>
-<jsp:include page="../common/nav.jsp"></jsp:include>
+<jsp:include page="../plain/nav.jsp"></jsp:include>
 <%
-    Optional<User> loggedIn = User.getTable(User.class).getById(((User) session.getAttribute("user")).getId());
-
+User user = (User) request.getAttribute("in");
+boolean isLogged = UserController.isLoggedIn(user, request);
     Long lessonId = null;
     Lesson lesson = null;
     try {
@@ -24,12 +27,8 @@
     if (lessonId == null) {
         response.sendError(404);
     } else {
-        Optional<Lesson> lessonFound = Lesson.getTable(Lesson.class).getById(lessonId);
-        if (!lessonFound.isPresent()) {
-            //user not found
-            response.sendError(404);
-        } else {
-            lesson = lessonFound.get();
+       // Optional<Lesson> lessonFound = Lesson.getTable(Lesson.class).getById(lessonId);
+       lesson = LessonManager.getById(lessonId);
 %>
 
 <div class="container panel panel-default" syle="padding-bottom: 20px;">
@@ -39,9 +38,19 @@
 
         <br>
 
-        <% if (loggedIn.isPresent() && loggedIn.get().isTeacher()) { %>
+        <% 
+        
+       Course course = Section.getCourse();
+        
+       List <Userteaching> teaching = user.getUserteachings();
+       
+        
+        if (user.isTeacher() 
+        		//&&
+        		
+        		) { %>
             <br>
-            <jsp:include page="/restricted/teacher/newsection.jsp"></jsp:include>
+            <jsp:include page="/views/teacher/newsection.jsp"></jsp:include>
          <% }%>
 
         <h2>Sections</h2>
@@ -66,7 +75,7 @@
 
 </div>
 
-<% } }%>
+<%  }%>
 
 </body>
 </html>
