@@ -18,7 +18,11 @@ public class UserController {
 	}
 	
 	public static User getFromSession(HttpServletRequest request) {
-		return UserManager.getById((Long)(request.getSession().getAttribute("userId"))).get(); 
+		try {
+			return UserManager.getById((Integer)(request.getSession().getAttribute("userId"))).get(); 
+		} catch(NullPointerException e) {
+			return null;
+		}
 	}
 	
 	public static Object logout(HttpServletRequest request) {

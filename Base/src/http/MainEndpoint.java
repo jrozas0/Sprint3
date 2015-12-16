@@ -56,7 +56,7 @@ public class MainEndpoint extends HttpServlet {
 		//a request delegator is a controller that is likewise executed on a certain path,
 		//but instead of rendering a view based on it's returned values, will redirect to another view
 		//this is specially useful if we want to treat views as finite state machines, which for instance
-		//parameter validation will lead to it's state change and ence visual representation.
+		//parameter validation will lead to it's state change and hence visual representation.
 		//In this case, we are checking the user post request, and based on it's validity we add a 
 		//specific state to the view in a dynamic way
 		mappings.bind("/register/post", new RequestDelegator() {
@@ -87,30 +87,27 @@ public class MainEndpoint extends HttpServlet {
 			}
 		});
 		
-		mappings.bind("/course/chat", new RequestDelegator() {
+		mappings.bind("/course/chat/send", new RequestDelegator() {
 			@Override
 			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
 				try {
 					return CourseController.sendChat(req);
 				} catch (ServletException | IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				return null;
 			}
 		});
 		
-		mappings.bind("/course/chat/show", View.Simple("/views/chat.jsp"), RequestHandler.PLAIN());
-		mappings.bind("/course/chat/get", new RequestDelegator() {
+		mappings.bind("/course/chat/get", View.Simple("/views/chat.jsp"), new RequestHandler() {	
 			@Override
-			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
+			public Object handle(HttpServletRequest request, HttpServletResponse response) throws MVCException {
 				try {
-					return CourseController.readChat(req, res);
-				} catch (IOException | ServletException e) {
-					// TODO Auto-generated catch block
+					return CourseController.readChat(request);
+				} catch (ServletException | IOException e) {
 					e.printStackTrace();
 				}
-				return null;
+				return response;
 			}
 		});
 		

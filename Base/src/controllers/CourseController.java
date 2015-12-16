@@ -1,7 +1,8 @@
 package controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.jms.Connection;
@@ -13,11 +14,14 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import beans.Category;
+import beans.User;
 import beans.managers.CategoryManager;
+import beans.managers.CourseManager;
+import beans.managers.DataSource;
 import lib.controllers.View;
+import lib.controllers.ex.BadRequest;
 
 public class CourseController {
 
@@ -34,29 +38,27 @@ public class CourseController {
 		return View.Simple("");
 	}
 	
-	public static View readChat(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/event-stream");   
-        response.setCharacterEncoding("UTF-8");
-        PrintWriter writer = response.getWriter();
+	//each user-course pair will have it's own queue.
+	public static String getQueueName(Integer userId, String courseId) {
+		return "user-" + userId + "-course-" + courseId;
+	}
+	
+	public static List<String> readChat(HttpServletRequest request) throws ServletException, IOException {
+		if (UserController.getFromSession(request) == null || request.getParameter("course") == null)
+			throw new BadRequest();
+		User user = UserController.getFromSession(request);
+		List<String> conv = new ArrayList<>();
 		try {
-
-			//Initialize context and session
-			
 			javax.naming.InitialContext jndiContext = new javax.naming.InitialContext(); 					
 			ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("tiwconnectionfactory"); 
-			Queue queue = (Queue) jndiContext.lookup("tiwqueue");
+			Queue queue = (Queue) jndiContext.lookup(getQueueName(user.getId(), request.getParameter("course")));
 			
-			
-			//Create the connection
 			javax.jms.Connection con = connectionFactory.createConnection();
 
-			//Create the session (no trasactions)
 			javax.jms.Session ses = con.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
-			//Initi connection
 			con.start();
 
-			//Create a consumer
 			javax.jms.MessageConsumer mc= ses.createConsumer(queue);
 			
 			Message mensaje = null;
@@ -65,128 +67,71 @@ public class CourseController {
 				if (mensaje != null) {
 					if (mensaje instanceof TextMessage) {
 						TextMessage m = (TextMessage) mensaje;
-			            writer.write("Message: "+ m.getText() +"\n\n");	
-			            writer.flush();
-			            System.out.println("got message " + m.getText());
+			            String msg= m.getStringProperty("sender") + ": "+ m.getText() +"\n\n";	
+		            	conv.add(msg);
 		            } else {
-						// JHC ************ Not the right type
-						//break;
-
+						break;
 					}
-				} else // there are no messages
-					{
-					System.out.println(" Waiting for more messages </br>");
-					//break;
+				} else  { // there are no messages
+					break;
 				}
 
 			}
-
-			//Close the session
-			//ses.close();
-
-			//Close the connection
-			//con.close();
+			ses.close();
+			con.close();
 
 		} catch (Exception e) {
-			System.out.println(
-				"JHC *************************************** Error in doPost: "
-					+ e);
+			e.printStackTrace();
 		}
 		
-		return View.Ok();
-			
+		return conv;
 	}
 	
+	//the best thing to do would be to create new student topics programmatically.
+	//but apparently we don't know if it's possible. Either way we think our implementation is the best option
 	public static View sendChat(
 			javax.servlet.http.HttpServletRequest request)
 			throws javax.servlet.ServletException, java.io.IOException {
 						
-
-			try {
-
-				//Init context and session ...........................................
-				
+			if (UserController.getFromSession(request) == null || request.getAttribute("message") == null
+					|| request.getParameter("course") == null)
+				throw new BadRequest();
+			
+			User user = UserController.getFromSession(request);
+			
+			try {				
 				javax.naming.InitialContext jndiContext = new javax.naming.InitialContext(); 					
 				ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("tiwconnectionfactory"); 
-				Queue queue = (Queue) jndiContext.lookup("tiwqueue");
-						
 				
-				// - Now we write the message
+				//when a message is sent, make sure to redirect it to all the users that must receive it
 				
-				// First create a conection
-				 //javax.jms.QueueConnection Qcon = null; //... COMPLETE ....
-				 
-				 Connection connection = connectionFactory.createConnection();
-			      
-			      
-				// Next create the session. Indicate that transaction will not be supported
-				 //javax.jms.QueueSession QSes = null; //... COMPLETE ....
+				//Course course = CourseManager.
+				
+				Queue queue = (Queue) jndiContext.lookup(getQueueName(user.getId(), request.getParameter("course")));
+				
+				Connection connection = connectionFactory.createConnection();
+				Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+				MessageProducer messageProducer = session.createProducer(queue); 
+				TextMessage textMessage = session.createTextMessage();
 
-				 Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-
-					
-					// Assign the Queue to the session to create the sender
-					 javax.jms.QueueSender Qsen =  null; //... COMPLETE ....
-					 
-				 MessageProducer messageProducer = session.createProducer(queue);
-
-					// Create a text message
-				 javax.jms.TextMessage men = null; //... COMPLETE ....
-
-				 
-				 TextMessage textMessage = session.createTextMessage();
-
-
-
-				//  We retrieve the message from the parameter and assign in to the one of the queue
-				 //men.setText(request.getParameter("message"));
-				 textMessage.setText(request.getParameter("message"));
-
-				// Send the message through the sender
+				textMessage.setText(request.getParameter("message"));
+				textMessage.setStringProperty("sender", user.getName());
+				
 				messageProducer.send(textMessage);
-
-
-				// Close the producer
-				// ... COMPLETE ...
 				messageProducer.close();	
 				
-				// Close the session 
-				// ... COMPLETE ...
 				session.close();
-				
-				// Close the connection 
-				// ... COMPLETE ...
 				connection.close();
-				
-
-				System.out.println("message sent");
-				
+								
 			} catch (javax.jms.JMSException e) {
-				System.out.println(
-					"JHC *************************************** Error in doPost: "
-						+ e);
-				System.out.println(
-					"JHC *************************************** Error MQ: "
-						+ e.getLinkedException().getMessage());
-				System.out.println(
-					"JHC *************************************** Error MQ: "
-						+ e.getLinkedException().toString());		
-				System.out.println(" Error when sending the message</BR>");
-		
-				
+					e.printStackTrace();	
 			}catch (Exception e) {
-				System.out.println(
-					"JHC *************************************** Error in doPost: "
-						+ e.toString());
-				
+				e.printStackTrace();
 			}
+			
 			return View.Ok();
 			
 		}
-
-	
-	
-	
 	
 	
 }
