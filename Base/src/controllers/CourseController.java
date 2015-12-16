@@ -10,16 +10,20 @@ import java.util.Optional;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import beans.Category;
 import beans.User;
+import beans.Userattending;
+import beans.Userteaching;
 import beans.managers.CategoryManager;
 import beans.managers.CourseManager;
 import beans.managers.DataSource;
@@ -162,49 +166,52 @@ public class CourseController {
 	
 	//the best thing to do would be to create new student topics programmatically.
 	//but apparently we don't know if it's possible. Either way we think our implementation is the best option
-	public static View sendChat(
-			javax.servlet.http.HttpServletRequest request)
-			throws javax.servlet.ServletException, java.io.IOException {
+	public static View sendChat(javax.servlet.http.HttpServletRequest request) throws javax.servlet.ServletException, java.io.IOException, NamingException, JMSException {
 						
-			if (UserController.getFromSession(request) == null || request.getAttribute("message") == null
-					|| request.getParameter("course") == null)
-				throw new BadRequest();
-			
-			User user = UserController.getFromSession(request);
-			
-			try {				
-				javax.naming.InitialContext jndiContext = new javax.naming.InitialContext(); 					
-				ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("tiwconnectionfactory"); 
-				
-				//when a message is sent, make sure to redirect it to all the users that must receive it
-				
-				//Course course = CourseManager.
-				
-				Queue queue = (Queue) jndiContext.lookup(getQueueName(user.getId(), request.getParameter("course")));
-				
-				Connection connection = connectionFactory.createConnection();
-				Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-				MessageProducer messageProducer = session.createProducer(queue); 
-				TextMessage textMessage = session.createTextMessage();
-
-				textMessage.setText(request.getParameter("message"));
-				textMessage.setStringProperty("sender", user.getName());
-				
-				messageProducer.send(textMessage);
-				messageProducer.close();	
-				
-				session.close();
-				connection.close();
-								
-			} catch (javax.jms.JMSException e) {
-					e.printStackTrace();	
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			return View.Ok();
-			
+		if (UserController.getFromSession(request) == null || request.getParameter("message") == null || request.getParameter("course") == null)
+			throw new BadRequest();
+		
+		User user = UserController.getFromSession(request);
+		
+		javax.naming.InitialContext jndiContext = new javax.naming.InitialContext(); 					
+		ConnectionFactory connectionFactory = (ConnectionFactory) jndiContext.lookup("tiwconnectionfactory"); 
+		
+		//when a message is sent, make sure to redirect it to all the users that must receive it
+		
+		Optional<Course> course = CourseManager.getById(Integer.parseInt(request.getParameter("course")));
+		if (!course.isPresent()) throw new BadRequest();
+		for(Userattending attending: course.get().getUserattendings()) {
+			User at = attending.getUser();
+			pushChat(jndiContext, connectionFactory, user, at, course.get(), request.getParameter("message"));
 		}
+		
+		for(Userteaching teaching: course.get().getUserteachings()) {
+			User at = teaching.getUser();
+			pushChat(jndiContext, connectionFactory, user, at, course.get(), request.getParameter("message"));
+		}
+																	
+		return View.Ok();
+			
+	}
+	
+	public static void pushChat(javax.naming.InitialContext jndiContext, ConnectionFactory connectionFactory, User sender, User receiver, Course course, String message) throws JMSException, NamingException {
+		Queue queue = (Queue) jndiContext.lookup(getQueueName(receiver.getId(), course.getId() + ""));
+		
+		Connection connection = connectionFactory.createConnection();
+		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		MessageProducer messageProducer = session.createProducer(queue); 
+		TextMessage textMessage = session.createTextMessage();
+
+		textMessage.setText(message);
+		textMessage.setStringProperty("sender", sender.getName());
+		
+		messageProducer.send(textMessage);
+		messageProducer.close();	
+		
+		session.close();
+		connection.close();
+
+	}
 	
 	
 }

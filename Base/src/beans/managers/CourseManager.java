@@ -24,4 +24,5 @@ public class CourseManager {
 		em.persist(course);
 		em.getTransaction().commit();
 	}
+	
 }

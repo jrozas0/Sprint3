@@ -92,7 +92,7 @@ public class MainEndpoint extends HttpServlet {
 			public View delegate(HttpServletRequest req, HttpServletResponse res) throws MVCException {
 				try {
 					return CourseController.sendChat(req);
-				} catch (ServletException | IOException e) {
+				} catch (ServletException | IOException | NamingException | JMSException e) {
 					e.printStackTrace();
 				}
 				return null;
