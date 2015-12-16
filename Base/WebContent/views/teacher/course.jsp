@@ -1,7 +1,7 @@
+<%@page import="beans.Userteaching"%>
 <%@ page import="java.util.Optional" %>
-<%@ page import="java.util.*" %>
+<%@ page import="controllers.UserController" %>
 <%@ page import="beans.*" %>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -61,21 +61,25 @@
 
     </div>
             <% 
+            
+            
             Course thisCourse = user.getCourse();
             if(user.isAttending(thisCourse) || user.isTeaching(thisCourse))  { %>
 
  <%if (!user.isAttending(thisCourse) && !user.isTeacher()) { %>
 
-                    <% if(!wished) { %>
-                        <a href="/restricted/course/wish?course=<%=course.getId()%>"><div class="btn btn-lg btn-info">Wish</div></a>
+                    <% 
+
+                    if(!wished) { %>
+                        <a href="/restricted/course/wish?course=<%=course.get().getId()%>"><div class="btn btn-lg btn-info">Wish</div></a>
                         <br>
                     <% } else { %>
-                        <a href="/restricted/course/notwish?course=<%=course.getId()%>"><div class="btn btn-lg btn-danger">Do not wish</div></a>
+                        <a href="/restricted/course/notwish?course=<%=course.get().getId()%>"><div class="btn btn-lg btn-danger">Do not wish</div></a>
                         <br>
                     <% }%>
 
                     <br>
-                    <a href="/restricted/course/register?course=<%=course.getId()%>"><div class="btn btn-lg btn-success" style="margin-bottom: 20px;">Enroll</div></a>
+                    <a href="/restricted/course/register?course=<%=course.get().getId()%>"><div class="btn btn-lg btn-success" style="margin-bottom: 20px;">Enroll</div></a>
 
             </div>
 
@@ -84,7 +88,7 @@
 
         <% } %>
 
-    </div>
+   
 
 
 
